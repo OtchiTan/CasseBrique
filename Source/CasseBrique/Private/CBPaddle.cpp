@@ -36,7 +36,6 @@ void ACBPaddle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	GEngine->AddOnScreenDebugMessage(-1, 0.f, bParrying ? FColor::Green : FColor::Red, "Parry");
 }
 
 void ACBPaddle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -80,8 +79,8 @@ void ACBPaddle::Parry(const FInputActionValue& Value)
 	if (Ball.IsValid())
 	{
 		Ball->StaticMesh->SetSimulatePhysics(true);
-		const float Y = MoveBarYValue * 550.f;
-		Ball->StaticMesh->SetPhysicsLinearVelocity(FVector(1000, Y, 0));
+		const float Y = MoveBarYValue;
+		Ball->Direction = FVector(1, Y, 0);
 		Ball.Reset();
 		return;
 	}

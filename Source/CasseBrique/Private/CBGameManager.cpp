@@ -1,6 +1,7 @@
 ﻿#include "CBGameManager.h"
 
 #include "CBBrick.h"
+#include "CBGameState.h"
 
 
 ACBGameManager::ACBGameManager()
@@ -13,6 +14,26 @@ ACBGameManager::ACBGameManager()
 void ACBGameManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	ACBGameState* GameState = Cast<ACBGameState>(GetWorld()->GetGameState());
+	GameState->GameManager = this;
+
+	SpawnBricks();
+}
+
+void ACBGameManager::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+void ACBGameManager::SpawnBricks()
+{
+	for (const TWeakObjectPtr<ACBBrick>& Brick : Bricks)
+	{
+		Brick->Destroy();
+	}
+
+	Bricks.Empty();
 
 	for (int X = -SizeX; X <= SizeX; ++X)
 	{
@@ -32,7 +53,10 @@ void ACBGameManager::BeginPlay()
 	}
 }
 
-void ACBGameManager::Tick(float DeltaTime)
+void ACBGameManager::CheckWin()
 {
-	Super::Tick(DeltaTime);
+	if (!Bricks.IsEmpty())
+		return;
+
+	OnWin.Broadcast();
 }

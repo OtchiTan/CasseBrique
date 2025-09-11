@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/SphereComponent.h"
 #include "GameFramework/Pawn.h"
 #include "CBBall.generated.h"
 
@@ -25,10 +24,12 @@ public:
 	UStaticMeshComponent* StaticMesh = nullptr;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
-	float BallSpeed = 1200.f;
+	float BallSpeed = 1000.f;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int32 BallDamage = 1;
+
+	FVector Direction = FVector::ZeroVector;
 
 	UFUNCTION()
 	void EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);

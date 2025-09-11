@@ -21,7 +21,7 @@ void ACBBrick::BeginPlay()
 	OnActorHit.AddDynamic(this, &ACBBrick::EventHit);
 }
 
-void ACBBrick::Tick(float DeltaTime)
+void ACBBrick::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
@@ -57,8 +57,7 @@ void ACBBrick::EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImp
 
 	GameManager->Bricks.Remove(this);
 
-	if (GameManager->Bricks.IsEmpty())
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Green, "Win");
+	GameManager->CheckWin();
 
 	FTimerHandle DestroyTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(DestroyTimerHandle, [this]

@@ -5,6 +5,7 @@
 #include "CBBrick.generated.h"
 
 class ACBGameManager;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChanged);
 
 UCLASS()
@@ -35,6 +36,6 @@ public:
 
 	UPROPERTY(Blueprintable, BlueprintCallable, BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
-	
+
 	bool bCanBeHit = true;
 };

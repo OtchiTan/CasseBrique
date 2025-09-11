@@ -18,9 +18,11 @@ void ACBBall::BeginPlay()
 	OnActorHit.AddDynamic(this, &ACBBall::EventHit);
 }
 
-void ACBBall::Tick(float DeltaTime)
+void ACBBall::Tick(const float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	StaticMesh->SetPhysicsLinearVelocity(Direction * BallSpeed);
 }
 
 void ACBBall::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -30,13 +32,14 @@ void ACBBall::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ACBBall::EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
-	BallSpeed += 5.f;
+	FVector MirroredDirection = UKismetMathLibrary::MirrorVectorByNormal(
+		Direction, FVector(Hit.Normal.X, Hit.Normal.Y, 0.f));
 
-	FVector LinearVelocity = StaticMesh->GetPhysicsLinearVelocity();
+	UKismetMathLibrary::Vector_Normalize(MirroredDirection, 0.0001);
 
-	LinearVelocity = UKismetMathLibrary::ClampVectorSize(LinearVelocity, BallSpeed, BallSpeed);
+	Direction = MirroredDirection;
 
-	StaticMesh->SetPhysicsLinearVelocity(LinearVelocity);
+	BallSpeed += 10.f;
 
 	const ACBPaddle* Bar = Cast<ACBPaddle>(OtherActor);
 

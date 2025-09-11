@@ -4,6 +4,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "CBGameState.generated.h"
 
+class ACBGameManager;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnScoreChanged, int32, NewScore);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthLose, int32, HealthLose);
 
@@ -30,4 +31,7 @@ public:
 
 	UPROPERTY(Blueprintable, BlueprintCallable, BlueprintAssignable)
 	FOnHealthLose OnHealthLose;
+
+	UPROPERTY(BlueprintReadOnly)
+	TWeakObjectPtr<ACBGameManager> GameManager = nullptr;
 };

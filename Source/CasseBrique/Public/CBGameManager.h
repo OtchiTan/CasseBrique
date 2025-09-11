@@ -5,6 +5,8 @@
 #include "GameFramework/Actor.h"
 #include "CBGameManager.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWin);
+
 class ACBBrick;
 
 UCLASS()
@@ -31,4 +33,12 @@ public:
 	int32 SizeX = 3;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 SizeY = 3;
+
+	UFUNCTION(BlueprintCallable)
+	void SpawnBricks();
+
+	UPROPERTY(Blueprintable, BlueprintCallable, BlueprintAssignable)
+	FOnHealthChanged OnWin;
+
+	void CheckWin();
 };
