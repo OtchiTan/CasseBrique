@@ -35,7 +35,6 @@ void ACBPaddle::BeginPlay()
 void ACBPaddle::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void ACBPaddle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -46,15 +45,11 @@ void ACBPaddle::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	{
 		// Move Bar
 		EnhancedInputComponent->BindAction(MoveBarAction, ETriggerEvent::Triggered, this, &ACBPaddle::MoveBar);
-
-		EnhancedInputComponent->BindAction(ParryAction, ETriggerEvent::Triggered, this, &ACBPaddle::Parry);
 	}
 }
 
 void ACBPaddle::MoveBar(const FInputActionValue& Value)
 {
-	MoveBarYValue = Value.Get<float>();
-	
 	if (PlayerController->bShowMouseCursor)
 		return;
 
@@ -63,23 +58,19 @@ void ACBPaddle::MoveBar(const FInputActionValue& Value)
 	if (NextPosition > -MaxBarMovement && NextPosition < MaxBarMovement)
 	{
 		StaticMesh->AddLocalOffset(FVector(0, Offset, 0));
-
-		if (Ball.IsValid())
-		{
-			Ball->SetActorLocation(StaticMesh->GetComponentLocation() + FVector(125, 0, 0));
-		}
 	}
 }
 
-void ACBPaddle::Parry(const FInputActionValue& Value)
+void ACBPaddle::Parry(const float MoveInputValue)
 {
 	if (PlayerController->bShowMouseCursor)
 		return;
-	
+
 	if (Ball.IsValid())
 	{
+		Ball->DetachFromActor(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
 		Ball->StaticMesh->SetSimulatePhysics(true);
-		const float Y = MoveBarYValue;
+		const float Y = MoveInputValue;
 		Ball->Direction = FVector(1, Y, 0);
 		Ball.Reset();
 		return;

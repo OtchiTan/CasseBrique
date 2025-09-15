@@ -3,7 +3,7 @@
 #include "CBBall.h"
 #include "CBGameState.h"
 #include "CBGameManager.h"
-
+#include "Kismet/GameplayStatics.h"
 
 ACBBrick::ACBBrick()
 {
@@ -33,9 +33,7 @@ void ACBBrick::EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImp
 		return;
 
 	bCanBeHit = false;
-
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::FromInt(Ball->BallDamage));
-
+	
 	Health -= Ball->BallDamage;
 
 	Ball->BallDamage = 1;
@@ -58,6 +56,9 @@ void ACBBrick::EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImp
 	GameManager->Bricks.Remove(this);
 
 	GameManager->CheckWin();
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), DestroySound, GetActorLocation());
+	StaticMesh->SetSimulatePhysics(true);
 
 	FTimerHandle DestroyTimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(DestroyTimerHandle, [this]

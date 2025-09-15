@@ -37,19 +37,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UInputAction* MoveBarAction = nullptr;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	UInputAction* ParryAction = nullptr;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ParryWindowTiming = 2.f;
 	
 	UFUNCTION()
 	void MoveBar(const FInputActionValue& Value);
 
-	float MoveBarYValue = 0.f;
-
-	UFUNCTION()
-	void Parry(const FInputActionValue& Value);
+	UFUNCTION(BlueprintCallable)
+	void Parry(const float MoveInputValue);
 
 	UPROPERTY(BlueprintReadWrite)
 	TWeakObjectPtr<ACBBall> Ball = nullptr;

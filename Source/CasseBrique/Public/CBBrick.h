@@ -37,5 +37,8 @@ public:
 	UPROPERTY(Blueprintable, BlueprintCallable, BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USoundBase* DestroySound = nullptr;
+
 	bool bCanBeHit = true;
 };
