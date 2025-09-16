@@ -28,15 +28,13 @@ void ACBBrick::Tick(const float DeltaTime)
 
 void ACBBrick::EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
-	ACBBall* Ball = Cast<ACBBall>(OtherActor);
+	const ACBBall* Ball = Cast<ACBBall>(OtherActor);
 	if (!IsValid(Ball) || !bCanBeHit)
 		return;
 
 	bCanBeHit = false;
 	
 	Health -= Ball->BallDamage;
-
-	Ball->BallDamage = 1;
 
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]
@@ -57,12 +55,13 @@ void ACBBrick::EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImp
 
 	GameManager->CheckWin();
 
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), DestroySound, GetActorLocation());
+	UGameplayStatics::PlaySound2D(GetWorld(), DestroySound);
+
 	StaticMesh->SetSimulatePhysics(true);
 
-	FTimerHandle DestroyTimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(DestroyTimerHandle, [this]
-	{
-		Destroy();
-	}, 0.2f, false);
+	OnBrickDestroyed();
+}
+
+void ACBBrick::OnBrickDestroyed_Implementation()
+{
 }

@@ -41,10 +41,9 @@ void ACBBall::EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpu
 
 	BallSpeed += 10.f;
 
-	const ACBPaddle* Bar = Cast<ACBPaddle>(OtherActor);
-
-	if (Bar && Bar->bParrying)
+	if (const ACBPaddle* Bar = Cast<ACBPaddle>(OtherActor))
 	{
-		BallDamage = 2;
+		BallDamage = Bar->bParrying ? 3 : 1;
+		OnDamageChange.Broadcast();
 	}
 }

@@ -76,12 +76,21 @@ void ACBPaddle::Parry(const float MoveInputValue)
 		return;
 	}
 
-	if (bParrying)
+	if (bParryingCooldown)
 		return;
 
 	bParrying = true;
+	bParryingCooldown = true;
 	GetWorld()->GetTimerManager().SetTimer(ParryTimerHandle, [this]
 	{
 		bParrying = false;
+		OnParryStateChange();
 	}, ParryWindowTiming, false);
+	GetWorld()->GetTimerManager().SetTimer(ParryCooldownHandle, [this]
+	{
+		bParryingCooldown = false;
+		OnParryStateChange();
+	}, ParryCooldownTiming, false);
+
+	OnParryStateChange();
 }

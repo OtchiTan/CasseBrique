@@ -4,6 +4,8 @@
 #include "GameFramework/Pawn.h"
 #include "CBBall.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDamageChange);
+
 UCLASS()
 class CASSEBRIQUE_API ACBBall : public APawn
 {
@@ -31,6 +33,9 @@ public:
 
 	FVector Direction = FVector::ZeroVector;
 
+	UPROPERTY(BlueprintReadOnly, BlueprintAssignable, BlueprintCallable)
+	FOnDamageChange OnDamageChange;
+	
 	UFUNCTION()
 	void EventHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 

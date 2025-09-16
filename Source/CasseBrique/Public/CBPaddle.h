@@ -39,7 +39,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ParryWindowTiming = 2.f;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ParryCooldownTiming = 2.f;
+
 	UFUNCTION()
 	void MoveBar(const FInputActionValue& Value);
 
@@ -52,9 +55,16 @@ public:
 	UPROPERTY()
 	TWeakObjectPtr<ACBPlayerController> PlayerController = nullptr;
 
+	UPROPERTY(BlueprintReadOnly)
 	bool bParrying = false;
+	UPROPERTY(BlueprintReadOnly)
+	bool bParryingCooldown = false;
 
 	FTimerHandle ParryTimerHandle;
+	FTimerHandle ParryCooldownHandle;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnParryStateChange();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float MaxBarMovement = 1300.f;

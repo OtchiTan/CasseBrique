@@ -35,16 +35,16 @@ void ACBGameManager::SpawnBricks()
 
 	Bricks.Empty();
 
-	for (int X = -SizeX; X <= SizeX; ++X)
+	for (int X = 0; X <= SizeX; ++X)
 	{
 		const bool bIsEvenRow = X % 2 == 0;
 		for (int Y = -SizeY; Y <= (!bIsEvenRow ? SizeY : SizeY - 1); ++Y)
 		{
-			FVector Location = FVector(0);
-			Location.X = X * 150.f;
-			Location.Y = Y * 350.f;
+			FVector Location = GetActorLocation();
+			Location.X += X * 115.f;
+			Location.Y += Y * 250.f;
 			if (bIsEvenRow)
-				Location.Y += 175.f;
+				Location.Y += 125.f;
 			ACBBrick* Brick = GetWorld()->SpawnActor<ACBBrick>(BrickClass, Location, FRotator(0, 0, 0),
 			                                                   FActorSpawnParameters());
 			Brick->GameManager = this;

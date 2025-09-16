@@ -40,5 +40,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USoundBase* DestroySound = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UCameraShakeBase> CameraShake = nullptr;
+
 	bool bCanBeHit = true;
+
+	UFUNCTION(BlueprintNativeEvent)
+	void OnBrickDestroyed();
 };
